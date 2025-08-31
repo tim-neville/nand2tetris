@@ -11,5 +11,13 @@ CHIP Mux {
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+    // Flip select bit for aSignal for A bit
+    Not(in=sel, out=aSignal);
+    // Pass through A when select is 0 (but is flipped to be 1)
+    And(a=a, b=aSignal, out=gatedA);
+    // Pass through B when select is 1
+    And(a=b, b=sel, out=gatedB);
+    // gate A and B only pass 1 when their value is 1 AND their select bit is 1
+    // OR them together so that any value of 1 is passed through
+    Or(a=gatedA, b=gatedB, out=out);
 }
